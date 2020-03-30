@@ -7,29 +7,16 @@ class Personnage {
      private $level;
      private $hp;
      private $vie;
-    // construction des personage
-    function __construct(string $nom, int $force = 20, int $level = 1, int $hp = 100,string $vie) {
-        $this->nom = $nom;
-        $this->force = $force;
-        $this->level = $level;
-        $this->hp = $hp;
-        $this->vie = $vie;
-    }
-    // Affiche les carateristique //
-    function carateristique() {
-        echo $this->nom." a une force de ".$this->force." point au level ".$this->level." il a ".$this->hp." HP et il est ".$this->etat(); 
-    }
-    // défini si le personnage et mort ou vivant en fonction des HP //
-    function etat() {
-        if($this->hp >= 1) {
-            $vie = "alive";
-        } else {
-            $vie = "dead";
-        }
 
-        return $vie;
+    // Affiche les carateristique //
+
+    function carateristique() {
+        $etat = ($this->vie)? "mort" : "vivant";
+        echo $this->nom." a une force de ".$this->force." point au level ".$this->level." il a ".$this->hp." HP et il est ".$etat; 
     }
+
     // Permet la modification des perso //
+
     function getNom(): string {
         return $this->nom;
     }
@@ -62,33 +49,43 @@ class Personnage {
         $this->hp = $hp;
     }
 
-    function getVie(): string {
+    function isVie(): bool {
         return $this->vie;
     }
 
-    function setVie($vie) {
-        $this->vie = $vie;
+    function setVie() {
+        if($this->hp < 1) {
+            $this->vie =  true;
+        } else {
+            $this->vie = false;
+        }
     }
 
-    function attaquer() {
-        echo $this->nom." attaque ". setNom($nom) . setNom($nom) ." perds ".$this->force;
-    }
+    function attaque()
 
 };
-// implementation des personnage //
-$perso1 = new Personnage( "",  30,  3,  100, "");
-$perso2 = new Personnage( "",  50,  1,  0, "");
-$perso3 = new Personnage( "",  30,  2,  50, "");
+// implementation des personnage et modification //
+$perso1 = new Personnage();
+$perso1->setNom("Bernard");
+$perso1->setForce(12);
+$perso1->setLevel(1);
+$perso1->setHp(100);
 
-// modification des personnage //
-$perso2->setNom("robert");
-$perso2->setForce(50);
-$perso2->setLevel(10);
-$perso2->setHp(30);
-$perso2->setVie("");
+$perso2 = new Personnage();
+$perso2->setNom("miguel");
+$perso2->setForce(12);
+$perso2->setLevel(1);
+$perso2->setHp(100);
 
-echo "le personnage ". $perso1->getNom() ." a ". $perso1->getForce() ." point de force et ". $perso1->getHp() ." point de vie en étant level". $perso1->getLevel() .". son état de santé indique qu'il est ". $perso1->getVie();
+$perso3 = new Personnage();
+$perso3->setNom("Raph");
+$perso3->setForce(12);
+$perso3->setLevel(1);
+$perso3->setHp(100);
 
-//echo $perso2->carateristique();
+
+
+
+echo $perso2->carateristique();
 
 
