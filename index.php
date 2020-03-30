@@ -61,31 +61,37 @@ class Personnage {
         }
     }
 
-    function attaque()
+    // permet l'attaque entre personnage //
+
+    function attaque($perso) {
+        $perso->setHp($perso->setHp(100)-$perso->setForce(50));
+    }
 
 };
+
 // implementation des personnage et modification //
+
 $perso1 = new Personnage();
 $perso1->setNom("Bernard");
-$perso1->setForce(12);
+$perso1->setForce(15);
 $perso1->setLevel(1);
-$perso1->setHp(100);
+$perso1->setHp(75);
 
 $perso2 = new Personnage();
 $perso2->setNom("miguel");
-$perso2->setForce(12);
-$perso2->setLevel(1);
-$perso2->setHp(100);
+$perso2->setForce(30);
+$perso2->setLevel(3);
+$perso2->setHp(125);
 
 $perso3 = new Personnage();
 $perso3->setNom("Raph");
-$perso3->setForce(12);
-$perso3->setLevel(1);
+$perso3->setForce(25);
+$perso3->setLevel(2);
 $perso3->setHp(100);
 
 
+echo "Le personnage ".$perso1->getNom()." attaque ".$perso3->getNom()." il pert ".$perso1->attaque($perso3)."point de vie";
 
-
-echo $perso2->carateristique();
+//echo $perso3->carateristique();
 
 
