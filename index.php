@@ -76,25 +76,14 @@ $perso1 = new Personnage( "pierre",  30,  3,  100, "");
 $perso2 = new Personnage( "paul",  50,  1,  0, "");
 $perso3 = new Personnage( "jack",  30,  2,  50, "");
 
-$perso2->setNom("miguel");
-echo $perso2->getNom();
+$perso2->setNom("robert");
+$perso2->setForce(50);
+$perso2->setLevel(10);
+$perso2->setHp(30);
+$perso2->setVie("");
 
-/*$perso1->nom = "Pierre";
-$perso1->force = 30;
-$perso1->level = 1;
-$perso1->hp = 100;
-$perso1->vie;
 
-$perso2->nom = "Paul";
-$perso2->force = 10;
-$perso2->level = 1;
-$perso2->hp = 0;
-$perso2->vie;
 
-$perso3->nom = "Jack";
-$perso3->force = 20;
-$perso3->level = 1;
-$perso3->hp = 100;
-$perso3->vie;*/
+echo $perso2->carateristique();
 
-$perso1->carateristique();
+
