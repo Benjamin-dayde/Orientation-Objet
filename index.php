@@ -64,7 +64,12 @@ class Personnage {
     // permet l'attaque entre personnage //
 
     function attaque($perso) {
-        $perso->setHp($perso->setHp(100)-$perso->setForce(50));
+        $perso->setHp($perso->getHp() - $this->force);
+        $perso->setVie() ;
+    }
+
+    function levelUp($perso) {
+        $perso->setLevel($perso->getLevel()+1);
     }
 
 };
@@ -85,13 +90,17 @@ $perso2->setHp(125);
 
 $perso3 = new Personnage();
 $perso3->setNom("Raph");
-$perso3->setForce(25);
+$perso3->setForce(50);
 $perso3->setLevel(2);
 $perso3->setHp(100);
 
 
-echo "Le personnage ".$perso1->getNom()." attaque ".$perso3->getNom()." il pert ".$perso1->attaque($perso3)."point de vie";
+$perso1->attaque($perso3);
+$perso1->LevelUp($perso1);
 
-//echo $perso3->carateristique();
+var_dump($perso1);
+
+//var_dump($perso3);
+//var_dump($perso1);
 
 
