@@ -67,28 +67,43 @@ class Personnage {
         $perso->setHp($perso->getHp() - $this->force);
         $perso->setVie() ;
     }
-
-    function levelUp($perso) {
-        $perso->setLevel($perso->getLevel()+1);
+    // permet la monté de level d'un personnage //
+    function levelUp() {
+        $this->level ++ ;
     }
+
+};
+
+class Archer {
+
+};
+
+class Guerrier {
+
+};
+
+class Mage {
 
 };
 
 // implementation des personnage et modification //
 
 $perso1 = new Personnage();
+$perso1 = new Archer();
 $perso1->setNom("Bernard");
 $perso1->setForce(15);
 $perso1->setLevel(1);
 $perso1->setHp(75);
 
 $perso2 = new Personnage();
+$perso2 = new Guerrier();
 $perso2->setNom("miguel");
 $perso2->setForce(30);
 $perso2->setLevel(3);
 $perso2->setHp(125);
 
 $perso3 = new Personnage();
+$perso3 = new Mage();
 $perso3->setNom("Raph");
 $perso3->setForce(50);
 $perso3->setLevel(2);
@@ -96,9 +111,11 @@ $perso3->setHp(100);
 
 
 $perso1->attaque($perso3);
-$perso1->LevelUp($perso1);
+$perso1->levelUp();
 
 var_dump($perso1);
+
+$perso1->carateristique();
 
 //var_dump($perso3);
 //var_dump($perso1);
