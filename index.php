@@ -1,19 +1,20 @@
 <?php
 
-class Archer {
+class Personnage {
 
-     private $nom;
-     private $force;
-     private $level;
-     private $hp;
-     private $vie;
-     private $type;
+     protected $nom;
+     protected $force;
+     protected $level;
+     protected $hp;
+     protected $vie;
+     protected $arme;
+     
 
     // Affiche les carateristique //
 
     function carateristique() {
         $etat = ($this->vie)? "mort" : "vivant";
-        echo $this->nom." a une force de ".$this->force." point au level ".$this->level." il a ".$this->hp." HP et il est ".$etat."sa classe est".$this->type; 
+        echo $this->nom ." a une force de ".$this->force." avec une arme de puissance ".$this->arme.", son état de santé est de ".$this->hp." points/100, notre personnage est donc ".$etat."<br>"."<hr>"; 
     }
 
     // Permet la modification des perso //
@@ -66,217 +67,133 @@ class Archer {
         return $this->type;
     }
  
+    function setType($type) {
+        $this->type = $type;
+    }
+
+    function getArme(): int {
+        return $this->arme;
+    }
+
+    function setArme($arme) {
+        $this->arme = $arme;
+    }
+
     // permet l'attaque entre personnage //
 
     function attaque($perso) {
-        $perso->setHp($perso->getHp() - $this->force);
+        $perso->setHp($perso->getHp() - ($this->force + $this->arme));
         $perso->setVie() ;
     }
     // permet la monté de level d'un personnage //
     function levelUp() {
         $this->level ++ ;
     }
+
  
 
 };
 
-class Guerrier {
+// Création de class dite fille // 
 
-    private $nom;
-    private $force;
-    private $level;
-    private $hp;
-    private $vie;
-    private $type;
+class Archer extends Personnage {
 
-   // Affiche les carateristique //
+    function attaque($perso) {
+        $this->tireFleche();
+        parent::attaque($perso);
+    }
 
-   function carateristique() {
-       $etat = ($this->vie)? "mort" : "vivant";
-       echo $this->nom." a une force de ".$this->force." point au level ".$this->level." il a ".$this->hp." HP et il est ".$etat."sa classe est".$this->type; 
-   }
+    function tireFleche() {
+        echo $this->nom." l'".Archer::class." tire des flèche de ".($this->force+$this->arme)." point de dégats. <br> <hr>";
+    }
 
-   // Permet la modification des perso //
-
-   function getNom(): string {
-       return $this->nom;
-   }
-
-   function setNom($nom) {
-       $this->nom = $nom;
-   }
-
-   function getForce(): int {
-       return $this->force;
-   }
-
-   function setForce($force) {
-       $this->force = $force;
-   }
-
-   function getLevel(): int {
-       return $this->level;
-   }
-
-   function setLevel($level) {
-       $this->level = $level;
-   }
-
-   function getHp(): int {
-       return $this->hp;
-   }
-
-   function setHp($hp) {
-       $this->hp = $hp;
-   }
-
-   function isVie(): bool {
-       return $this->vie;
-   }
-
-   function setVie() {
-       if($this->hp < 1) {
-           $this->vie =  true;
+    function degats(Personnage $perso) {
+       if($perso instanceof Mage) {
+        $perso->setHp($perso->getHp() - 20);
        } else {
-           $this->vie = false;
+           $perso->setHp($perso->getHp() - 40);
        }
-   }
-
-   function getType(): string {
-       return $this->type;
-   }
-
-
-   // permet l'attaque entre personnage //
-
-   function attaque($perso) {
-       $perso->setHp($perso->getHp() - $this->force);
-       $perso->setVie() ;
-   }
-   // permet la monté de level d'un personnage //
-   function levelUp() {
-       $this->level ++ ;
-   }
-
+    }
 
 };
 
-class Mage {
+class Guerrier extends Personnage {
 
-    private $nom;
-    private $force;
-    private $level;
-    private $hp;
-    private $vie;
-    private $type;
+    function attaque($perso) {
+        $this->FrappeLourde();
+        parent::attaque($perso);
+    }
 
-   // Affiche les carateristique //
+    function FrappeLourde() {
+        echo $this->nom." le ".Guerrier::class." a une force de ".($this->force+$this->arme)." et frappe a la hâche <br><hr>";
+    }
+};
 
-   function carateristique() {
-       $etat = ($this->vie)? "mort" : "vivant";
-       echo $this->nom." a une force de ".$this->force." point au level ".$this->level." il a ".$this->hp." HP et il est ".$etat."sa classe est".$this->type; 
-   }
+class Mage extends Personnage {
 
-   // Permet la modification des perso //
+    function attaque($perso) {
+        $this->lanceSort();
+        parent::attaque($perso);
+    }
 
-   function getNom(): string {
-       return $this->nom;
-   }
-
-   function setNom($nom) {
-       $this->nom = $nom;
-   }
-
-   function getForce(): int {
-       return $this->force;
-   }
-
-   function setForce($force) {
-       $this->force = $force;
-   }
-
-   function getLevel(): int {
-       return $this->level;
-   }
-
-   function setLevel($level) {
-       $this->level = $level;
-   }
-
-   function getHp(): int {
-       return $this->hp;
-   }
-
-   function setHp($hp) {
-       $this->hp = $hp;
-   }
-
-   function isVie(): bool {
-       return $this->vie;
-   }
-
-   function setVie() {
-       if($this->hp < 1) {
-           $this->vie =  true;
-       } else {
-           $this->vie = false;
-       }
-   }
-
-   function getType(): string {
-       return $this->type;
-   }
-
-   // permet l'attaque entre personnage //
-
-   function attaque($perso) {
-       $perso->setHp($perso->getHp() - $this->force);
-       $perso->setVie() ;
-   }
-   // permet la monté de level d'un personnage //
-   function levelUp() {
-       $this->level ++ ;
-   }
-
+    function lanceSort() {
+        echo $this->nom." le ".Mage::class." a une force de ".$this->force." et lance des sort <br> ";
+    }
 
 };
+
 
 
 // implementation des personnage et modification //
 
 $perso1 = new Archer();
-$perso1->setNom("Bernard");
+$perso1->setNom("Robin des bois");
 $perso1->setForce(15);
 $perso1->setLevel(1);
-$perso1->setHp(75);
+$perso1->setHp(100);
+$perso1->setArme(50);
 
 
 $perso2 = new Guerrier();
-$perso2->setNom("miguel");
+$perso2->setNom("Grübok");
 $perso2->setForce(30);
 $perso2->setLevel(3);
-$perso2->setHp(125);
+$perso2->setHp(100);
+$perso2->setArme(30);
 
 
 $perso3 = new Mage();
-$perso3->setNom("Raph");
+$perso3->setNom("Merlin");
 $perso3->setForce(50);
 $perso3->setLevel(2);
-$perso3->setHp(0);
+$perso3->setHp(100);
+$perso3->setArme(10);
 
-
-
-
-$perso1->attaque($perso3);
-$perso1->levelUp();
-
-var_dump($perso1);
-var_dump($perso2);
-var_dump($perso3);
+echo "----------------------le challenger arrive. ------------------------- <br> <hr>";
 
 $perso1->carateristique();
 
-//var_dump($perso3);
-//var_dump($perso1);
+echo "------------------------Avant l'attaque. ------------------------------ <br> <hr>";
+
+$perso2->carateristique();
+
+echo "----------------------------".$perso1->getNom()." attaque --------------------------------------- <br><hr>";
+
+$perso1->attaque($perso2);
+
+echo "-----------------------Aprés l'attaque ------------------------------- <br> <hr>";
+
+$perso2->carateristique();
+
+echo "--------------------Il attaque a nouveaux. ------------------------- <br> <hr>";
+
+$perso1->attaque($perso2);
+
+echo "------------------Aprés la nouvelle attaque ---------------------- <br> <hr>";
+
+$perso2->carateristique();
+
+
+ 
 
 
