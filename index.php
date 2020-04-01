@@ -99,10 +99,10 @@ class Personnage {
 
     function attaque($perso) {
         
-        if ($this->setShield($perso) == 0) {
-            $perso->setShield($perso->getshield() - ($this->force + $this->arme));
-        } else {
+        if ($perso->getShield() <= 0) {
             $perso->setHp($perso->getHp() - ($this->force + $this->arme));
+        } else {
+            $perso->setShield($perso->getShield() - ($this->force + $this->arme));
         }
 
         $perso->setVie() ;
@@ -135,7 +135,7 @@ class Archer extends Personnage {
     }
 
     function degats(Personnage $perso) {
-       if($perso instanceof Mage) {
+       if($perso instanceof Mage && $perso->getShield() <= 0) {
         $perso->setHp($perso->getHp() - 10);
        } else {
            $perso->setHp($perso->getHp() - 40);
@@ -157,7 +157,7 @@ class Guerrier extends Personnage {
     }
 
     function degats(Personnage $perso) {
-        if($perso instanceof Archer) {
+        if($perso instanceof Archer && $perso->getShield() <= 0) {
          $perso->setHp($perso->getHp() - 30);
         } else {
             $perso->setHp($perso->getHp() - 70);
@@ -178,7 +178,7 @@ class Mage extends Personnage {
     }
 
     function degats(Personnage $perso) {
-        if($perso instanceof Guerrier) {
+        if($perso instanceof Guerrier && $perso->getShield() <= 0) {
          $perso->setHp($perso->getHp() - 30);
         } else {
             $perso->setHp($perso->getHp() - 2);
