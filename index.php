@@ -1,6 +1,23 @@
 <?php
 
-class Personnage {
+interface Attaquant {
+    
+    function attaque(Personnage $perso);
+}
+
+interface DegatSubits {
+
+    function degatSubits(int $perso);
+}
+
+/*interface Cible {
+
+    function cible(Personnage $perso);
+}*/
+
+
+
+abstract class Personnage implements Attaquant, DegatSubits {
 
      protected $nom;
      protected $force;
@@ -97,16 +114,17 @@ class Personnage {
 
     // permet l'attaque entre personnage //
 
-    function attaque($perso) {
-        
+    abstract function attaque(Personnage $perso);
+
+    function degatSubits($perso) {
         if ($perso->getShield() <= 0) {
             $perso->setHp($perso->getHp() - ($this->force + $this->arme));
         } else {
             $perso->setShield($perso->getShield() - ($this->force + $this->arme));
         }
-
-        $perso->setVie() ;
     }
+
+    
     // permet la monté de level d'un personnage //
     function levelUp() {
         $this->level ++ ;
@@ -124,14 +142,13 @@ class Archer extends Personnage {
 
     
 
-    function attaque($perso) {
+    function attaque(Personnage $perso) {
+
+        $perso->setVie() ;
         $this->tireFleche();
         $this->degats($perso);
-        parent::attaque($perso);
-    }
-
-    function tireFleche() {
-        echo $this->nom." l'".Archer::class." tire des flèche de ".($this->force+$this->arme)." point de dégats. <br> <hr>";
+        parent::degatSubits($perso);
+        
     }
 
     function degats(Personnage $perso) {
@@ -142,14 +159,21 @@ class Archer extends Personnage {
        }
     }
 
+    function tireFleche() {
+        echo $this->nom." l'".Archer::class." tire des flèche de ".($this->force+$this->arme)." point de dégats. <br> <hr>";
+    }
+
 };
 
 class Guerrier extends Personnage {
 
-    function attaque($perso) {
+    function attaque(Personnage $perso) {
+
+        $perso->setVie() ;
         $this->FrappeLourde();
         $this->degats($perso);
-        parent::attaque($perso);
+        parent::degatSubits($perso);
+        
     }
 
     function FrappeLourde() {
@@ -158,19 +182,22 @@ class Guerrier extends Personnage {
 
     function degats(Personnage $perso) {
         if($perso instanceof Archer && $perso->getShield() <= 0) {
-         $perso->setHp($perso->getHp() - 30);
+         $perso->setHp($perso->getHp() - 10);
         } else {
-            $perso->setHp($perso->getHp() - 70);
+            $perso->setHp($perso->getHp() - 20);
         }
      }
+
 };
 
 class Mage extends Personnage {
 
-    function attaque($perso) {
+    function attaque(Personnage $perso) {
+
+        $perso->setVie() ; 
         $this->lanceSort();
         $this->degats($perso);
-        parent::attaque($perso);
+        parent::degatSubits($perso);
     }
 
     function lanceSort() {
@@ -186,6 +213,100 @@ class Mage extends Personnage {
      }
 
 };
+
+// Creation de mob //
+
+class Creature implements Attaquant, DegatSubits {
+
+    protected $nom;
+    protected $force;
+    protected $hp;
+    protected $vie;
+
+    function carateristique() {
+        $etat = ($this->vie)? "mort" : "vivant";
+        echo $this->nom ." Force ".$this->force."/100 | HP ".$this->hp." points/1000, état de santé ".$etat."<br>"."<hr>"; 
+    }
+
+    function getNom(): string {
+        return $this->nom;
+    }
+
+    function setNom($nom) {
+        $this->nom = $nom;
+    }
+
+    // force du perso //
+
+    function getForce(): int {
+        return $this->force;
+    }
+
+    function setForce($force) {
+        $this->force = $force;
+    }
+
+    // Vie du perso //
+
+    function getHp(): int {
+        return $this->hp;
+    }
+
+    function setHp($hp) {
+        $this->hp = $hp;
+    }
+
+    // Etat de santé du perso //
+
+    function isVie(): bool {
+        return $this->vie;
+    }
+
+    function setVie() {
+        if($this->hp < 1) {
+            $this->vie =  true;
+        } else {
+            $this->vie = false;
+        }
+    }
+
+    function attaque(Personnage $perso) {
+
+        $this->degatSubits($perso);
+    }
+
+
+
+    function degatSubits($perso) {
+        if ($perso->getShield() <= 0) {
+            $perso->setHp($perso->getHp() - ($this->force));
+        } else {
+            $perso->setShield($perso->getShield() - ($this->force));
+        }
+
+        echo "le boss a infligé ".$this->force." point de dégats <br> <hr>";
+    }
+
+
+
+
+}
+// Implementation des mob //
+
+$creature1 = new Creature();
+$creature1->setNom("Yorm the giant");
+$creature1->setForce(100);
+$creature1->setHp(1000);
+
+$creature2 = new Creature();
+$creature2->setNom("Legion de Farron");
+$creature2->setForce(50);
+$creature2->setHp(1000);
+
+$creature3 = new Creature();
+$creature3->setNom("Aldrich le dévoreur de monde");
+$creature3->setForce(70);
+$creature3->setHp(1000);
 
 
 
@@ -215,7 +336,7 @@ $perso3->setForce(50);
 $perso3->setLevel(2);
 $perso3->setHp(100);
 $perso3->setArme(10);
-$perso3->setShield(100);
+$perso3->setShield(15);
 
 $personnages = [
     $perso1, $perso2, $perso3
@@ -228,17 +349,29 @@ do {
 
 } while ($rand1 == $rand2);
 
-echo "----------------------le challenger arrive. ------------------------- <br> <hr>";
+$creatures = [
+    $creature1, $creature2, $creature3
+];
 
-$personnages[$rand1]->carateristique();
+do {
+
+    $rand3 = array_rand($creatures);
+    $rand4 = array_rand($creatures);
+
+} while ($rand3 == $rand4);
+
+
+echo "----------------------le Boss arrive. ------------------------- <br> <hr>";
+
+$creatures[$rand3]->carateristique();
 
 echo "------------------------Avant l'attaque. ------------------------------ <br> <hr>";
 
 $personnages[$rand2]->carateristique();
 
-echo "----------------------------".$personnages[$rand1]->getNom()." attaque --------------------------------------- <br><hr>";
+echo "----------------------------".$creatures[$rand3]->getNom()." attaque --------------------------------------- <br><hr>";
 
-$personnages[$rand1]->attaque($personnages[$rand2]);
+$creatures[$rand3]->attaque($personnages[$rand2]);
 
 echo "-----------------------Aprés l'attaque ------------------------------- <br> <hr>";
 
@@ -246,11 +379,12 @@ $personnages[$rand2]->carateristique();
 
 echo "--------------------Il attaque a nouveaux. ------------------------- <br> <hr>";
 
-$personnages[$rand1] ->attaque($personnages[$rand2]);
+$creatures[$rand3]->attaque($personnages[$rand2]);
 
 echo "------------------Aprés la nouvelle attaque ---------------------- <br> <hr>";
 
 $personnages[$rand2]->carateristique();
+
 
 
 
