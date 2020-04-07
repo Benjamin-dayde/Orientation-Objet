@@ -10,10 +10,10 @@ interface DegatSubits {
     function degatSubits(int $perso);
 }
 
-/*interface Cible {
+interface Cible {
 
-    function cible(Personnage $perso);
-}*/
+    function Cible(Personnage $perso);
+}
 
 
 
@@ -33,7 +33,7 @@ abstract class Personnage implements Attaquant, DegatSubits {
 
     function carateristique() {
         $etat = ($this->vie)? "mort" : "vivant";
-        echo $this->nom ." Force ".$this->force."/100 |"."| Shield ".$this->shield."/100 || Arme ".$this->arme."/100 |"."| HP ".$this->hp." points/100, état de santé ".$etat."<br>"."<hr>"; 
+        echo $this->nom ." Force ".$this->force."/100 |"."| Shield ".$this->shield."/100 || Arme ".$this->arme."/100 |"."| HP ".$this->hp." points/100, état de santé ".$etat."<br> <hr>"; 
     }
 
     // Permet la modification des perso //
@@ -114,7 +114,7 @@ abstract class Personnage implements Attaquant, DegatSubits {
 
     // permet l'attaque entre personnage //
 
-    abstract function attaque(Personnage $perso);
+    abstract function attaque($perso);
 
     function degatSubits($perso) {
         if ($perso->getShield() <= 0) {
@@ -142,22 +142,22 @@ class Archer extends Personnage {
 
     
 
-    function attaque(Personnage $perso) {
+    function attaque($perso) {
 
         $perso->setVie() ;
         $this->tireFleche();
-        $this->degats($perso);
+        //$this->degats($perso);
         parent::degatSubits($perso);
         
     }
 
-    function degats(Personnage $perso) {
-       if($perso instanceof Mage && $perso->getShield() <= 0) {
+    /*function degats(Personnage $perso) {
+       if($perso instanceof ) {
         $perso->setHp($perso->getHp() - 10);
        } else {
            $perso->setHp($perso->getHp() - 40);
        }
-    }
+    }*/
 
     function tireFleche() {
         echo $this->nom." l'".Archer::class." tire des flèche de ".($this->force+$this->arme)." point de dégats. <br> <hr>";
@@ -167,50 +167,50 @@ class Archer extends Personnage {
 
 class Guerrier extends Personnage {
 
-    function attaque(Personnage $perso) {
+    function attaque($perso) {
 
         $perso->setVie() ;
         $this->FrappeLourde();
-        $this->degats($perso);
+        //$this->degats($perso);
         parent::degatSubits($perso);
         
     }
+
+    /*function degats(Personnage $perso) {
+        if($perso instanceof Creature) {
+         $perso->setHp($perso->getHp() - 10);
+        } else {
+            $perso->setHp($perso->getHp() - 20);
+        }
+    }*/
 
     function FrappeLourde() {
         echo $this->nom." le ".Guerrier::class." a une force de ".($this->force+$this->arme)." et frappe a la hâche <br><hr>";
     }
 
-    function degats(Personnage $perso) {
-        if($perso instanceof Archer && $perso->getShield() <= 0) {
-         $perso->setHp($perso->getHp() - 10);
-        } else {
-            $perso->setHp($perso->getHp() - 20);
-        }
-     }
-
 };
 
 class Mage extends Personnage {
 
-    function attaque(Personnage $perso) {
+    function attaque($perso) {
 
         $perso->setVie() ; 
         $this->lanceSort();
-        $this->degats($perso);
+        //$this->degats($perso);
         parent::degatSubits($perso);
     }
 
-    function lanceSort() {
-        echo $this->nom." le ".Mage::class." a une force de ".$this->force." et lance des sort <br><hr>";
-    }
-
-    function degats(Personnage $perso) {
-        if($perso instanceof Guerrier && $perso->getShield() <= 0) {
+    /*function degats(Personnage $perso) {
+        if($perso instanceof Creature) {
          $perso->setHp($perso->getHp() - 30);
         } else {
             $perso->setHp($perso->getHp() - 2);
         }
-     }
+    }*/
+
+    function lanceSort() {
+        echo $this->nom." le ".Mage::class." a une force de ".($this->force+$this->arme)." et lance des sort <br><hr>";
+    }
 
 };
 
@@ -222,6 +222,7 @@ class Creature implements Attaquant, DegatSubits {
     protected $force;
     protected $hp;
     protected $vie;
+    protected $shield;
 
     function carateristique() {
         $etat = ($this->vie)? "mort" : "vivant";
@@ -244,6 +245,16 @@ class Creature implements Attaquant, DegatSubits {
 
     function setForce($force) {
         $this->force = $force;
+    }
+
+    // Défense du perso // 
+
+    function getShield() {
+        return $this->shield;
+    }
+        
+    function setShield($shield) {
+        $this->shield = $shield;
     }
 
     // Vie du perso //
@@ -273,6 +284,7 @@ class Creature implements Attaquant, DegatSubits {
     function attaque(Personnage $perso) {
 
         $this->degatSubits($perso);
+        $perso->setVie() ;
     }
 
 
@@ -361,30 +373,31 @@ do {
 } while ($rand3 == $rand4);
 
 
+
+
 echo "----------------------le Boss arrive. ------------------------- <br> <hr>";
 
-$creatures[$rand3]->carateristique();
+$personnages[$rand1]->carateristique();
 
 echo "------------------------Avant l'attaque. ------------------------------ <br> <hr>";
 
-$personnages[$rand2]->carateristique();
+$creatures[$rand3]->carateristique();
 
-echo "----------------------------".$creatures[$rand3]->getNom()." attaque --------------------------------------- <br><hr>";
+echo "----------------------------".$personnages[$rand1]->getNom()." attaque --------------------------------------- <br><hr>";
 
-$creatures[$rand3]->attaque($personnages[$rand2]);
+$personnages[$rand1]->attaque($creatures[$rand3]);
 
 echo "-----------------------Aprés l'attaque ------------------------------- <br> <hr>";
 
-$personnages[$rand2]->carateristique();
+$creatures[$rand3]->carateristique();
 
 echo "--------------------Il attaque a nouveaux. ------------------------- <br> <hr>";
 
-$creatures[$rand3]->attaque($personnages[$rand2]);
+$personnages[$rand1]->attaque($creatures[$rand3]);
 
 echo "------------------Aprés la nouvelle attaque ---------------------- <br> <hr>";
 
-$personnages[$rand2]->carateristique();
-
+$creatures[$rand3]->carateristique();
 
 
 

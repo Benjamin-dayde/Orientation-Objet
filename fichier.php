@@ -16,7 +16,7 @@ fclose($fichier);
 
 $compteur = fopen("compteur.txt", "r");
 
-$page = ["index.html", "plat.html", "entree.html" , "dessert.html"];
+$page = ["index.html", "plat.html", "entree.html" , "dessert.html", "recette.html", "idee.html"];
 
 $tab = sizeof($page);
 
@@ -26,3 +26,19 @@ var_dump(fgets($compteur));
 
 
 fclose($compteur);
+
+// exo 4 //
+
+$personnage = fopen("personnage.csv" , "r");
+
+fwrite($personnage, "nom,force,level,hp,arme,shield");
+
+var_dump($personnage);
+
+$personnages = fgetcsv($personnage , $len = 0 ,$delimiter = ",");
+
+var_dump($personnages);
+
+
+
+fclose($personnage);
