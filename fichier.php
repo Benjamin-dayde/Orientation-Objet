@@ -27,18 +27,22 @@ var_dump(fgets($compteur));
 
 fclose($compteur);
 
-// exo 4 //
+// exo 3 /
 
 $personnage = fopen("personnage.csv" , "r");
 
-fwrite($personnage, "nom,force,level,hp,arme,shield");
+$valeur = ["pierre",100,20,60,30];
 
-var_dump($personnage);
+fputcsv($personnage, $valeur , $limite = "," );
 
-$personnages = fgetcsv($personnage , $len = 0 ,$delimiter = ",");
+$personnages = fgetcsv($personnage , $delimiter = ",");
 
 var_dump($personnages);
 
 
 
 fclose($personnage);
+
+// exo 4 //
+
+
