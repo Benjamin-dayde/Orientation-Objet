@@ -45,7 +45,14 @@ fclose($personnage);
 
 // exo 4 //
 
+$form = [$_POST['titre'], $_POST['ingredients'], $_POST['etapes'], $_POST['difficulte']];
 
+$formulaire = fopen("recup.csv", "a+");
+
+fputcsv($formulaire, $form, ",");
+
+
+fclose($formulaire);
 
 
 
@@ -70,7 +77,7 @@ fclose($personnage);
     </head>
 <section>
             <h2>Créez votre recette </h2>
-            <form action="formulaire.php" method="post">
+            <form action="fichier.php" method="post">
                 <p>
                     <label for="titre">Titre de la recette</label>
                     <input type="text" id="titre" name="titre" placeholder="">
