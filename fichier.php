@@ -43,14 +43,13 @@ var_dump($personnages);
 
 fclose($personnage);
 
-// exo 4 //
+// exo 5 //
 
 $form = [$_POST['titre'], $_POST['ingredients'], $_POST['etapes'], $_POST['difficulte']];
 
 $formulaire = fopen("recup.csv", "a+");
 
 fputcsv($formulaire, $form, ",");
-
 
 fclose($formulaire);
 
@@ -89,7 +88,7 @@ fclose($formulaire);
                 </p>
 
                 <p>
-                    <label for="ingredients">Les étapes</label>
+                    <label for="etapes">Les étapes</label>
                     <input type="text" id="etapes" name="etapes" placeholder="">
                 </p>
 
