@@ -69,7 +69,7 @@ fclose($personnage);
         <link rel="stylesheet" type="text/css" href="css/style.css">
     </head>
 <section>
-            <h2>Commentaires</h2>
+            <h2>Créez votre recette </h2>
             <form action="formulaire.php" method="post">
                 <p>
                     <label for="titre">Titre de la recette</label>
