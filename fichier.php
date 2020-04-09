@@ -9,7 +9,6 @@ $len = "";
 
 while ($len !== false) {
     $len = fgets($fichier);
-    var_dump($len);
 }
 
 fclose($fichier);
@@ -22,7 +21,6 @@ $tab = sizeof($page);
 
 fwrite($compteur , "Vous avez ".$tab." page sur votre site ".PHP_EOL);
 
-var_dump(fgets($compteur));
 
 
 fclose($compteur);
@@ -37,21 +35,34 @@ fputcsv($personnage, $valeur , $limite = "," );
 
 $personnages = fgetcsv($personnage , $delimiter = ",");
 
-var_dump($personnages);
-
-
-
 fclose($personnage);
 
 // exo 5 //
 
 $form = [$_POST['titre'], $_POST['ingredients'], $_POST['etapes'], $_POST['difficulte']];
 
-$formulaire = fopen("recup.csv", "a+");
+$formulaire = fopen("recup.csv", "r");
 
 fputcsv($formulaire, $form, ",");
 
 fclose($formulaire);
+
+// exo 6 //
+
+$recette = fopen("recup.csv", "r");
+
+$recettes = [];
+$tab = "";
+while($tab !== false) {
+    $tab = fgetcsv($recette);
+    if($tab !== false) {
+        array_push($recettes, $tab);
+    }
+}
+
+fclose($recette);
+var_dump($recettes);
+
 
 
 
